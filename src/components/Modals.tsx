@@ -13,6 +13,7 @@ interface ModalType {
   handleCloseModal: () => void;
   type: "INCOME" | "EXPENSE";
   setModalType: Dispatch<SetStateAction<"" | "INCOME" | "EXPENSE">>;
+  data?: object
 }
 
 const Modals: React.FC<ModalType> = ({
@@ -32,6 +33,9 @@ const Modals: React.FC<ModalType> = ({
     category: "",
     date: new Date(),
   });
+  const [editData, setEditData] = useState({
+
+  })
 
   const dispatch = useDispatch();
 
