@@ -33,9 +33,9 @@ const Modals: React.FC<ModalType> = ({
     category: "",
     date: new Date(),
   });
-  const [editData, setEditData] = useState({
+  // const [editData, setEditData] = useState({
 
-  })
+  // })
 
   const dispatch = useDispatch();
 
