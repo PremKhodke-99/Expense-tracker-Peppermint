@@ -9,7 +9,6 @@ import { useState } from "react";
 import Modals from "@/components/Modals";
 import RecentTransaction from "@/components/RecentTransaction";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
 
 export default function HomeProvider() {
   return (

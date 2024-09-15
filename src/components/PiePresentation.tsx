@@ -3,13 +3,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { PieChart, Pie, Cell } from "recharts";
 
-// const data = [
-//   { name: "Group A", amount: 400 },
-//   { name: "Group B", amount: 300 },
-//   { name: "Group C", amount: 300 },
-//   { name: "Group D", amount: 200 },
-// ];
-
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const RADIAN = Math.PI / 180;
@@ -20,7 +13,6 @@ const renderCustomizedLabel = ({
   innerRadius,
   outerRadius,
   percent,
-  index,
 }: any) => {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
