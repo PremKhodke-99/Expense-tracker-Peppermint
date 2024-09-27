@@ -5,7 +5,7 @@ interface CardType {
   amount: number;
   type: "INCOME" | "EXPENSE";
   handleCloseModal: () => void;
-  setModalType: Dispatch<SetStateAction<"" | "INCOME" | "EXPENSE">>;
+  setModalType: Dispatch<SetStateAction<"" | "INCOME" | "EXPENSE" | "EDIT">>;
 }
 
 const Card: React.FC<CardType> = ({

@@ -20,7 +20,7 @@ export default function HomeProvider() {
 
 function Home() {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [modalType, setModalType] = useState<"INCOME" | "EXPENSE" | "">("");
+  const [modalType, setModalType] = useState<"INCOME" | "EXPENSE" | "EDIT" | "">("");
 
   const balance = useSelector((state: RootState) => state.balance);
   const expense = useSelector((state: RootState) => state.expense);

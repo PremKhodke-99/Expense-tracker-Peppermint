@@ -1,9 +1,10 @@
-import { addBalance, addExpense, Summary } from "@/store/expenseSlice";
-import React, {
-  Dispatch,
-  SetStateAction,
-  useState,
-} from "react";
+import {
+  addBalance,
+  addExpense,
+  editExpense,
+  Summary,
+} from "@/store/expenseSlice";
+import React, { Dispatch, SetStateAction, useState } from "react";
 
 import Modal from "react-modal";
 import { useDispatch } from "react-redux";
@@ -12,8 +13,8 @@ interface ModalType {
   showModal: boolean;
   handleCloseModal: () => void;
   type: "INCOME" | "EXPENSE";
-  setModalType: Dispatch<SetStateAction<"" | "INCOME" | "EXPENSE">>;
-  data?: object
+  setModalType: Dispatch<SetStateAction<"" | "INCOME" | "EXPENSE" | "EDIT">>;
+  data?: Summary;
 }
 
 const Modals: React.FC<ModalType> = ({
@@ -21,6 +22,7 @@ const Modals: React.FC<ModalType> = ({
   handleCloseModal,
   type,
   setModalType,
+  data,
 }) => {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
@@ -33,9 +35,13 @@ const Modals: React.FC<ModalType> = ({
     category: "",
     date: new Date(),
   });
-  // const [editData, setEditData] = useState({
-
-  // })
+  const [editData, setEditData] = useState({
+    id: data?.id ?? "randomid",
+    title: data?.title ?? "randomtitle",
+    amount: data?.amount ?? 5050,
+    category: data?.category ?? "randomcategory",
+    date: data?.date ?? new Date(),
+  });
 
   const dispatch = useDispatch();
 
@@ -62,8 +68,34 @@ const Modals: React.FC<ModalType> = ({
   const handleAddExpense = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(addExpense(expenseData));
-    setExpenseData({
+    setEditData({
       id: characters.charAt(Math.floor(Math.random() * characters.length)),
+      title: "",
+      amount: 0,
+      category: "",
+      date: new Date(),
+    });
+    handleCloseModal();
+  };
+
+  const handleEditDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEditData({
+      ...editData,
+      [name]:
+        name === "date"
+          ? new Date(value)
+          : name === "amount"
+          ? parseInt(value)
+          : value,
+    });
+  };
+
+  const handleEditExpense = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(editExpense(editData));
+    setExpenseData({
+      id: "",
       title: "",
       amount: 0,
       category: "",
@@ -117,7 +149,7 @@ const Modals: React.FC<ModalType> = ({
             Cancel
           </button>
         </form>
-      ) : (
+      ) : type === "EXPENSE" ? (
         <form
           className="flex gap-[14px] flex-wrap mt-5 text-black"
           onSubmit={handleAddExpense}
@@ -152,7 +184,60 @@ const Modals: React.FC<ModalType> = ({
             placeholder="dd/mm/yyyy"
             className="inputfield"
             onChange={handleDataChange}
-            value={expenseData.date.toISOString().split("T")[0]}
+            value={expenseData.date?.toISOString().split("T")[0]}
+          />
+          <button
+            type="submit"
+            className="h-[51px] w-[223px] bg-[#F4BB4A] rounded-[15px]"
+          >
+            Add Expense
+          </button>
+          <button
+            onClick={() => {
+              handleCloseModal();
+              setModalType("");
+            }}
+            className="w-28 h-[51px] bg-[#E3E3E3] text-black rounded-[15px] shadow-2xl"
+          >
+            Cancel
+          </button>
+        </form>
+      ) : (
+        <form
+          className="flex gap-[14px] flex-wrap mt-5 text-black"
+          onSubmit={handleEditExpense}
+        >
+          <input
+            type="text"
+            name="title"
+            placeholder="Title"
+            className="inputfield"
+            value={editData.title}
+            onChange={handleEditDataChange}
+          />
+          <input
+            type="number"
+            name="amount"
+            placeholder="Price"
+            className="inputfield"
+            value={editData.amount}
+            onChange={handleEditDataChange}
+          />
+          <input
+            type="text"
+            name="category"
+            placeholder="Select Category"
+            className="inputfield"
+            value={editData.category}
+            onChange={handleEditDataChange}
+          />
+          <input
+            type="date"
+            name="date"
+            placeholder="dd/mm/yyyy"
+            className="inputfield"
+            onChange={handleEditDataChange}
+            value={editData.date?.toISOString().split("T")[0]}
           />
           <button
             type="submit"

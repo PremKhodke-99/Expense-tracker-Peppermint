@@ -33,7 +33,7 @@ const RecentTransaction: React.FC = () => {
             <div className="flex-1">
               <p>{expenses.title}</p>
               <p className="text-[#9B9B9B]">
-                {expenses.date.toISOString().split("T")[0]}
+                {expenses.date?.toISOString().split("T")[0]}
               </p>
             </div>
             <div className="flex justify-center items-center">
